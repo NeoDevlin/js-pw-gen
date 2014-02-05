@@ -1,0 +1,32 @@
+<html><body>
+	<script type="text/javascript">
+	//V1.0 Martin
+	//V1.1 besserer PRNG & HTTPS Enforce (eigentlich extremer blödsinn, bitte serverseitig https verlangen) -Alex
+		function gen(){
+			var s = "";
+			var n = 64;
+			var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			var n_chars = chars.length;
+			var array = new Uint32Array(n);
+			window.crypto.getRandomValues(array);
+			for (var i = n - 1; i >= 0; i--) {
+				s += chars[array[i] % n_chars];
+			};
+			return s;
+		}
+		if (window.location.protocol != "https:") {
+    		window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
+    	} else {
+			var n = 40;
+			var s = "";
+			s += "passwords are generated using javascript (no transmission from server to browser)";
+			s += "<pre>";
+
+			for (var i = n - 1; i >= 0; i--) {
+				s += gen() + "\r\n";
+			}
+			s += "</pre>";
+			document.write(s);
+		}
+	</script>
+</body></html>
