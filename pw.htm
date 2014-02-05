@@ -7,26 +7,43 @@
 			var n = 64;
 			var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 			var n_chars = chars.length;
+			for (var i = n - 1; i >= 0; i--) {
+				s += chars[Math.floor(Math.random()*n_chars)];
+			};
+			return s;
+		}
+		function gen2(){
+			var s = "";
+			var n = 64;
+			var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			var n_chars = chars.length;
 			var array = new Uint32Array(n);
 			window.crypto.getRandomValues(array);
 			for (var i = n - 1; i >= 0; i--) {
 				s += chars[array[i] % n_chars];
 			};
 			return s;
-		}
-		if (window.location.protocol != "https:") {
-    		window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
-    	} else {
+		}		
+		function go(){
 			var n = 40;
 			var s = "";
 			s += "passwords are generated using javascript (no transmission from server to browser)";
 			s += "<pre>";
 
+			var pws = {};
 			for (var i = n - 1; i >= 0; i--) {
-				s += gen() + "\r\n";
+				var pw;
+				do{
+					pw = gen2();
+				} while(pws[pw] !== undefined);
+				pws[pw] = pw;
+
+				s += pw + "\r\n";
 			}
+			pws = null;
 			s += "</pre>";
 			document.write(s);
 		}
+		go();
 	</script>
 </body></html>
